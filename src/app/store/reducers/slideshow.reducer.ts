@@ -2,7 +2,7 @@ import { SlideShowActions, ESlideShowActions } from './../actions/slideshow.acti
 import { initialSlideShowState } from './../state/slideshow.state';
 import { ISlideshowState } from '../state/slideshow.state';
 
-export const SlideShowReducer = (
+export const slideShowReducer = (
   state =  initialSlideShowState,
   action: SlideShowActions
 ): ISlideshowState => {
