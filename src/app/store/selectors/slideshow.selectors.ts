@@ -3,9 +3,14 @@ import { IAppState } from "../state/app.state";
 import { createSelector } from '@ngrx/store';
 
 
-const selectSlideShowInfo = (state:IAppState) => state.slideshow;
+const selectSlideShowState = (state:IAppState) => state.slideshow;
 
-export const slideshowInfo = createSelector(
-  selectSlideShowInfo,
- (state: ISlideshowState) => state
+export const selectSlideShowPictures = createSelector(
+  selectSlideShowState,
+ (state: ISlideshowState) => state.pictures
 );
+
+export const selectCurrentlySelectedPicture = createSelector(
+  selectSlideShowState,
+  (state: ISlideshowState) => state.selectedImage
+)

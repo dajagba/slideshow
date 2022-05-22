@@ -14,6 +14,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   fetchMockData(): Observable<IPicture[]>{
+    let temp = 0;
     return this.http.get(MOCK_INITIAL_DATA)
     .pipe(
       switchMap((resp:any) => {
@@ -22,6 +23,7 @@ export class DataService {
       mergeMap(val => from(val).pipe(
         map((item:any)=>{
           let picture: IPicture = {
+            index:temp++ ,
             id: uuid.v4(),
             title: item?.data?.title,
             url: item?.data?.preview?.images[0]?.resolutions[2]?.url

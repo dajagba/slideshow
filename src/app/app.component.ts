@@ -12,6 +12,6 @@ export class AppComponent implements OnInit{
 
   constructor(private store: Store<IAppState>){}
   ngOnInit(){
-    this.store.dispatch(new GetInitialSlideShowData());
+    this.store.dispatch(GetInitialSlideShowData());
   }
 }

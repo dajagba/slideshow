@@ -1,39 +1,25 @@
-import { SlideShowActions, ESlideShowActions } from './../actions/slideshow.action';
+import { AddSlideShowImageSuccess, DeleteSlideShowImageSuccess, GetInitialSlideShowDataSuccess, UpdateSelectedSlideShowImage } from './../actions/slideshow.action';
 import { initialSlideShowState } from './../state/slideshow.state';
-import { ISlideshowState } from '../state/slideshow.state';
+import { createReducer, on } from '@ngrx/store';
+import { selectCurrentlySelectedPicture } from '../selectors/slideshow.selectors';
 
-export const slideShowReducer = (
-  state =  initialSlideShowState,
-  action: SlideShowActions
-): ISlideshowState => {
+export const slideShowReducer = createReducer(
+  initialSlideShowState,
+  on(GetInitialSlideShowDataSuccess, (state, action) => ({
+    ...state,
+    pictures: action.payload})),
+  on(AddSlideShowImageSuccess, (state,action)=> ({
+    ...state,
+    pictures:[...state.pictures,...action.payload]
+  })),
+  on(DeleteSlideShowImageSuccess, (state,action)=> (
+    {
+    ...state,
+    pictures: [...state.pictures.filter( x => !action.payload.includes(x))],
+  })),
+  on(UpdateSelectedSlideShowImage, (state,action)=> ({
+    ...state,
+    selectedImage: action.payload
+  }))
+  );
 
-  switch(action.type){
-    case ESlideShowActions.ADD_SLIDESHOW_IMAGE_SUCCESS: {
-      return {
-        ...state,
-        pictures: [...state.pictures,...action.payload]
-      };
-    }
-    case ESlideShowActions.DELETE_SLIDESHOW_IMAGE_SUCCESS: {
-      return {
-        ...state,
-        pictures: state.pictures.filter(val => !action.payload.includes(val))
-      };
-    }
-    case ESlideShowActions.GET_INITIAL_SLIDESHOW_DATA_SUCCESS: {
-      return {
-        ...state,
-        pictures: action.payload
-      }
-    }
-    case ESlideShowActions.UPDATE_SELECTED_SLIDESHOW_IMAGE: {
-      return {
-        ...state,
-        selectedImage: action.payload
-      }
-    }
-
-    default:
-      return state;
-  }
-}
