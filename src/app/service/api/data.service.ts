@@ -1,9 +1,9 @@
 import { IPicture } from './../../model/model';
 import { MOCK_INITIAL_DATA } from './../../model/constants';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Observable, throwError, of, from } from 'rxjs';
+import { catchError, retry, map, switchMap, mergeMap, tap, toArray } from 'rxjs/operators';
 import * as uuid from "uuid";
 
 @Injectable({
@@ -16,14 +16,25 @@ export class DataService {
   fetchMockData(): Observable<IPicture[]>{
     return this.http.get(MOCK_INITIAL_DATA)
     .pipe(
-      map((resp:IPicture[]) => ({
-        ...resp,
-        id: uuid.v4()
-      })),
+      switchMap((resp:any) => {
+        return of(resp?.data?.children)
+      }),
+      mergeMap(val => from(val).pipe(
+        map((item:any)=>{
+          let picture: IPicture = {
+            id: uuid.v4(),
+            title: item?.data?.title,
+            url: item?.data?.preview?.images[0]?.resolutions[2]?.url
+          }
+          return picture
+        })
+      )),
+      toArray(),
       retry(3),
       catchError((err) => {return this.handleError(err)}))
   }
   private handleError(error: HttpErrorResponse){
-    return throwError(() => new Error('There was a Network Issue: '+error));
+    console.log("error: " + error.message);
+    return throwError(() => new Error(`There was a Network Issue`));
   }
 }
