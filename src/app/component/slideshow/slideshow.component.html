@@ -1,16 +1,31 @@
-<ngb-carousel #myCarousel interval="false" (slide)="slideChange($event)" >
-  <ng-template ngbSlide *ngFor="let image of slideShowPictures$| async; let i = index">
-       <img [src]="image.url" alt="image.title" style="max-height:50vh; margin:0 auto;">
-    <div class="carousel-caption " style="max-height:60vh; margin:0 auto;">
-       <h3>{{image.title}}</h3>
-       <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+<ngb-carousel #myCarousel interval="false" (slide)="slideChange($event)">
+  <ng-template
+    ngbSlide
+    *ngFor="let image of slideShowPictures$ | async; let i = index"
+  >
+    <img
+      [src]="image.url"
+      alt="image.title"
+      style="max-height:50vh; margin:0 auto;"
+    />
+    <div class="carousel-caption" style="max-height:60vh; margin:0 auto;">
+      <h3>{{ image.title }}</h3>
+      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
     </div>
   </ng-template>
 </ngb-carousel>
 <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
-  <button class="btn btn-danger" (click)="deleteSlideShowImage()">Delete Image</button>
+  <button class="btn btn-danger" (click)="deleteSlideShowImage()">
+    Delete Image
+  </button>
   <div class="btn-group" role="group">
-    <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+    <button
+      id="btnGroupDrop1"
+      type="button"
+      class="btn btn-success dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
       Add a new Image
     </button>
     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -18,5 +33,5 @@
       <li><a class="dropdown-item" href="#">via File Upload</a></li>
     </ul>
   </div>
-  <button class="btn btn-primary" >Open Admin Panel </button>
+  <button class="btn btn-primary">Open Admin Panel</button>
 </div>
