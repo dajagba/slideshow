@@ -5,7 +5,8 @@ import { Store, select } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { selectSlideShowPictures } from 'src/app/store/selectors/slideshow.selectors';
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { take } from 'rxjs/operators';
+import { map, take, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, pipe, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-slideshow',
@@ -24,17 +25,49 @@ export class SlideshowComponent implements OnInit {
   }
 
   slideChange(ngbSlideEvent: NgbSlideEvent){
-    let index = Number(ngbSlideEvent.current.replace('ngb-slide-', ''));
+    // let index = Number(ngbSlideEvent.current.replace('ngb-slide-', ''));
+
+    combineLatest(
+      this.currentSelectedPicuture$,
+      this.slideShowPictures$,
+    ).pipe(take(1)).subscribe(
+      ([currentSelectedPicture, slideShowPictures]) => {
+        console.log(
+        `Current selected id: ${currentSelectedPicture},
+         Slideshow Images: ${slideShowPictures}`
+        );
+        // UpdateSelectedSlideShowImage({payload: })
+      }
+    );
     console.log(ngbSlideEvent)
     this.slideShowPictures$.pipe(take(1)).subscribe((data)=> {
-      this.store.dispatch( UpdateSelectedSlideShowImage({payload: data[index]}));
+      // this.store.dispatch( UpdateSelectedSlideShowImage({payload: data[index]}));
     });
   }
 
   deleteSlideShowImage(){
-    this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
-      this.store.dispatch(DeleteSlideShowImage({payload: [data]}))
-    });
+    combineLatest(
+      this.currentSelectedPicuture$,
+      this.slideShowPictures$,
+    ).pipe(take(1)).subscribe(
+      ([currentSelectedPicture, slideShowPictures]) => {
+        console.log(
+        `Current selected id: ${currentSelectedPicture},
+         Slideshow Images: ${slideShowPictures}`
+        );
+          // this.ngCarousel.select(`ngb-slide-${index}`);
+          this.ngCarousel.next();
+          console.log("DELETING: ", currentSelectedPicture);
+          this.store.dispatch(DeleteSlideShowImage({payload: [currentSelectedPicture]}));
+      }
+    );
+
+    // this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
+    //   this.store.dispatch(DeleteSlideShowImage({payload: [data]}))
+    //   this.store.dispatch( UpdateSelectedSlideShowImage({payload: data[index]}));
+
+    // });
+    // this.ngCarousel.next();
   }
   // navigateToSlide(index) {
   //   this.ngCarousel.select(`ngb-slide-${index}`);

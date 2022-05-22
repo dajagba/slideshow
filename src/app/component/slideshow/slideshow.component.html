@@ -1,7 +1,7 @@
 <ngb-carousel #myCarousel interval="false" (slide)="slideChange($event)" >
   <ng-template ngbSlide *ngFor="let image of slideShowPictures$| async; let i = index">
-       <img [src]="image.url" alt="image.title">
-    <div class="carousel-caption ">
+       <img [src]="image.url" alt="image.title" style="max-height:50vh; margin:0 auto;">
+    <div class="carousel-caption " style="max-height:60vh; margin:0 auto;">
        <h3>{{image.title}}</h3>
        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
     </div>
