@@ -27,47 +27,17 @@ export class SlideshowComponent implements OnInit {
   ngOnInit(): void {}
 
   slideChange(ngbSlideEvent: NgbSlideEvent) {
-    // let index = Number(ngbSlideEvent.current.replace('ngb-slide-', ''));
-
-    combineLatest(this.currentSelectedPicuture$, this.slideShowPictures$)
-      .pipe(take(1))
-      .subscribe(([currentSelectedPicture, slideShowPictures]) => {
-        console.log(
-          `Current selected id: ${currentSelectedPicture},
-         Slideshow Images: ${slideShowPictures}`
-        );
-        // UpdateSelectedSlideShowImage({payload: })
-      });
-    console.log(ngbSlideEvent);
+    let index = Number(ngbSlideEvent.current.replace('ngb-slide-', ''));
     this.slideShowPictures$.pipe(take(1)).subscribe((data) => {
-      // this.store.dispatch( UpdateSelectedSlideShowImage({payload: data[index]}));
+      let image = data.find((val) => val.index == index);
+      this.store.dispatch(UpdateSelectedSlideShowImage({ payload: image }));
     });
   }
 
   deleteSlideShowImage() {
-    combineLatest(this.currentSelectedPicuture$, this.slideShowPictures$)
-      .pipe(take(1))
-      .subscribe(([currentSelectedPicture, slideShowPictures]) => {
-        console.log(
-          `Current selected id: ${currentSelectedPicture},
-         Slideshow Images: ${slideShowPictures}`
-        );
-        // this.ngCarousel.select(`ngb-slide-${index}`);
-        this.ngCarousel.next();
-        console.log('DELETING: ', currentSelectedPicture);
-        this.store.dispatch(
-          DeleteSlideShowImage({ payload: [currentSelectedPicture] })
-        );
-      });
-
-    // this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
-    //   this.store.dispatch(DeleteSlideShowImage({payload: [data]}))
-    //   this.store.dispatch( UpdateSelectedSlideShowImage({payload: data[index]}));
-
-    // });
-    // this.ngCarousel.next();
+      this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
+      this.store.dispatch(DeleteSlideShowImage({ payload: [data] }));
+      this.ngCarousel.next();
+    });
   }
-  // navigateToSlide(index) {
-  //   this.ngCarousel.select(`ngb-slide-${index}`);
-  // }
 }
