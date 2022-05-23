@@ -1,30 +1,33 @@
 import {
   selectCurrentlySelectedPicture,
+  selectLastUploadedPicture,
   selectSlideShowPictures,
 } from './../selectors/slideshow.selectors';
 import {
+  AddSlideShowImageSuccess,
   DeleteSlideShowImageSuccess,
   ESlideShowActions,
 } from './../actions/slideshow.action';
 import { DataService } from './../../service/api/data.service';
 import { Injectable } from '@angular/core';
 import { IAppState } from '../state/app.state';
-import { Action, select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
   GetInitialSlideShowDataSuccess,
   UpdateSelectedSlideShowImage,
 } from '../actions/slideshow.action';
-import { switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, withLatestFrom } from 'rxjs/operators';
 import { IPicture } from '../../model/model';
-import { combineLatest, of } from 'rxjs';
+import { of } from 'rxjs';
+import * as uuid from "uuid";
 
 @Injectable()
 export class SlideShowEffects {
   constructor(
     private dataService: DataService,
     private store: Store<IAppState>,
-    private actions$: Actions
+    private actions$: Actions<any>
   ) {}
 
   @Effect()
@@ -65,4 +68,22 @@ export class SlideShowEffects {
       }
     })
   );
+
+  @Effect()
+  AddSlideShowImage$ = this.actions$.pipe(
+    ofType(ESlideShowActions.ADD_SLIDESHOW_IMAGE),
+    withLatestFrom(this.store.select(selectLastUploadedPicture)),
+    switchMap(([action,lastUploadedPicture])=> {
+      let index = lastUploadedPicture.index + 1;
+      if(typeof String (action.payload)){
+       let image:IPicture = {
+         index: index,
+         title: "test",
+         url: action.payload,
+         id: uuid.v4(),
+       }
+       return of(AddSlideShowImageSuccess({payload: [image]}))
+      }
+    })
+  )
 }

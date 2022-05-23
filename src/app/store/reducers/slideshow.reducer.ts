@@ -7,9 +7,11 @@ export const slideShowReducer = createReducer(
   initialSlideShowState,
   on(GetInitialSlideShowDataSuccess, (state, action) => ({
     ...state,
+    lastUploadedImage: action.payload[action.payload.length-1],
     pictures: action.payload})),
   on(AddSlideShowImageSuccess, (state,action)=> ({
     ...state,
+    lastUploadedImage: action.payload[action.payload.length-1],
     pictures:[...state.pictures,...action.payload]
   })),
   on(DeleteSlideShowImageSuccess, (state,action)=> (

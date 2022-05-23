@@ -8,7 +8,7 @@
       alt="image.title"
       style="max-height:50vh; margin:0 auto;"
     />
-    <div class="carousel-caption" style="max-height:60vh; margin:0 auto;">
+    <div class="carousel-caption" >
       <h3>{{ image.title }}</h3>
       <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
     </div>
@@ -29,7 +29,7 @@
       Add a new Image
     </button>
     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-      <li><a class="dropdown-item" href="#">via URL</a></li>
+      <li><a class="dropdown-item" href="javascript:void(0);" (click)="addSlideShowImage()">via URL</a></li>
       <li><a class="dropdown-item" href="#">via File Upload</a></li>
     </ul>
   </div>

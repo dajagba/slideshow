@@ -13,4 +13,9 @@ export const selectSlideShowPictures = createSelector(
 export const selectCurrentlySelectedPicture = createSelector(
   selectSlideShowState,
   (state: ISlideshowState) => state.selectedImage
-)
+);
+
+export const selectLastUploadedPicture = createSelector(
+  selectSlideShowState,
+  (state: ISlideshowState) => state.lastUploadedImage
+);

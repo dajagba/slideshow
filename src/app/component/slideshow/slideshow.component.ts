@@ -2,6 +2,7 @@ import { selectCurrentlySelectedPicture } from './../../store/selectors/slidesho
 import {
   UpdateSelectedSlideShowImage,
   DeleteSlideShowImage,
+  AddSlideShowImage,
 } from './../../store/actions/slideshow.action';
 import { IAppState } from './../../store/state/app.state';
 import { Store, select } from '@ngrx/store';
@@ -28,6 +29,7 @@ export class SlideshowComponent implements OnInit {
 
   slideChange(ngbSlideEvent: NgbSlideEvent) {
     let index = Number(ngbSlideEvent.current.replace('ngb-slide-', ''));
+    console.log(ngbSlideEvent);
     this.slideShowPictures$.pipe(take(1)).subscribe((data) => {
       let image = data.find((val) => val.index == index);
       this.store.dispatch(UpdateSelectedSlideShowImage({ payload: image }));
@@ -39,5 +41,9 @@ export class SlideshowComponent implements OnInit {
       this.store.dispatch(DeleteSlideShowImage({ payload: [data] }));
       this.ngCarousel.next();
     });
+  }
+  addSlideShowImage(){
+    let url = "https://i.imgur.com/oyTPssF.jpeg";
+    this.store.dispatch(AddSlideShowImage({payload: url}));
   }
 }

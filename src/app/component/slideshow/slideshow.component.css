@@ -36,3 +36,10 @@ ngb-carousel {
   z-index: 20;
 }
 
+.carousel-caption {
+  position: relative;
+  left: auto;
+  right: auto;
+  background: radial-gradient(black, transparent);
+  margin-top:3vh;
+}
