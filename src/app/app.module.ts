@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment'; // Angular CLI environment
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, SlideshowComponent],
@@ -20,6 +21,7 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     NgbModule,
     CommonModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([SlideShowEffects]),
     StoreDevtoolsModule.instrument({

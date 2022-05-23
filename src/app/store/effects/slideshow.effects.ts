@@ -75,15 +75,12 @@ export class SlideShowEffects {
     withLatestFrom(this.store.select(selectLastUploadedPicture)),
     switchMap(([action,lastUploadedPicture])=> {
       let index = lastUploadedPicture.index + 1;
-      if(typeof String (action.payload)){
        let image:IPicture = {
+         ...action.payload,
          index: index,
-         title: "test",
-         url: action.payload,
          id: uuid.v4(),
        }
        return of(AddSlideShowImageSuccess({payload: [image]}))
-      }
     })
   )
 }

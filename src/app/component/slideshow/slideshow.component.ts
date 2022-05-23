@@ -8,9 +8,11 @@ import { IAppState } from './../../store/state/app.state';
 import { Store, select } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { selectSlideShowPictures } from '../../store/selectors/slideshow.selectors';
-import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbModal, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { map, take, withLatestFrom } from 'rxjs/operators';
 import { combineLatest, pipe, Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IPicture } from 'src/app/model/model';
 
 @Component({
   selector: 'app-slideshow',
@@ -23,8 +25,15 @@ export class SlideshowComponent implements OnInit {
     select(selectCurrentlySelectedPicture)
   );
 
+  imageUploadForm = new FormGroup({
+    imageTitle: new FormControl('', Validators.required),
+    imageCaption: new FormControl(''),
+    imageUrl: new FormControl('https://i.imgur.com/oyTPssF.jpeg'),
+    imageFile: new FormControl(File)
+  });
   @ViewChild('myCarousel', { static: true }) ngCarousel!: NgbCarousel;
-  constructor(public store: Store<IAppState>) {}
+
+  constructor(public store: Store<IAppState>,private modalService: NgbModal) {}
   ngOnInit(): void {}
 
   slideChange(ngbSlideEvent: NgbSlideEvent) {
@@ -42,8 +51,28 @@ export class SlideshowComponent implements OnInit {
       this.ngCarousel.next();
     });
   }
-  addSlideShowImage(){
-    let url = "https://i.imgur.com/oyTPssF.jpeg";
-    this.store.dispatch(AddSlideShowImage({payload: url}));
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      console.log(`Closed with: ${result}`);
+    }, (reason) => {
+    console.log(`Dismissed `+(reason));
+    });
+  }
+  onUpload(){
+    this.modalService.dismissAll('Form Uploaded');
+    let image: IPicture = {
+      title: this.imageUploadForm.get('imageTitle').value,
+      caption: this.imageUploadForm.get('imageCaption').value,
+      url: this.imageUploadForm.get('imageUrl').value
+    }
+    this.store.dispatch(AddSlideShowImage({payload: image}));
+  }
+  uploadViaFiileUpload(){
+    alert("Sorry this feature is still under development!! ");
+  }
+
+  openAdminConfig(){
+    alert("Sorry this feature is still under development!! ");
   }
 }

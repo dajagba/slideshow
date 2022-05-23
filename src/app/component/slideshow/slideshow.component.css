@@ -1,6 +1,6 @@
 ngb-carousel {
   max-width: 700px;
-  margin: 50px auto;
+  margin: 0 auto;
 }
 ngb-carousel img {
   width: 100%;

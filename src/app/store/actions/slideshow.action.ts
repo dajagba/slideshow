@@ -20,7 +20,7 @@ export const GetInitialSlideShowDataSuccess = createAction(
 );
 export const AddSlideShowImage = createAction(
   ESlideShowActions.ADD_SLIDESHOW_IMAGE,
-  props<{ payload: string | File }>()
+  props<{ payload: IPicture }>()
 );
 export const AddSlideShowImageSuccess = createAction(
   ESlideShowActions.ADD_SLIDESHOW_IMAGE_SUCCESS,

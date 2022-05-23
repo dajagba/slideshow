@@ -6,15 +6,15 @@
     <img
       [src]="image.url"
       alt="image.title"
-      style="max-height:50vh; margin:0 auto;"
+      style="max-height: 50vh; margin: 0 auto"
     />
-    <div class="carousel-caption" >
+    <div class="carousel-caption">
       <h3>{{ image.title }}</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+      <p>{{image.caption ? image.caption : "Nulla vitae elit libero, a pharetra augue mollis interdum."}}</p>
     </div>
   </ng-template>
 </ngb-carousel>
-<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
+<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-5 ">
   <button class="btn btn-danger" (click)="deleteSlideShowImage()">
     Delete Image
   </button>
@@ -29,9 +29,73 @@
       Add a new Image
     </button>
     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-      <li><a class="dropdown-item" href="javascript:void(0);" (click)="addSlideShowImage()">via URL</a></li>
-      <li><a class="dropdown-item" href="#">via File Upload</a></li>
+      <li>
+        <a
+          class="dropdown-item"
+          href="javascript:void(0);"
+          (click)="open(content)"
+          >via URL</a
+        >
+      </li>
+      <li><a class="dropdown-item" href="javascript:void(0);" (click)="uploadViaFiileUpload()">via File Upload</a></li>
     </ul>
   </div>
-  <button class="btn btn-primary">Open Admin Panel</button>
+  <button class="btn btn-primary" (click)="openAdminConfig()">Open Admin Panel</button>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Upload Image</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <form [formGroup]="imageUploadForm" (ngSubmit)="onUpload()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="imageTitle">Image Title</label>
+        <div class="input-group">
+          <input
+            required
+            id="imageTitle"
+            class="form-control"
+            placeholder="Enter Image Tiitle"
+            name="imageTitle"
+            formControlName="imageTitle"
+            type="input"
+          />
+
+        </div>
+        <label for="imageCaption">Image Caption</label>
+        <div class="input-group">
+          <input
+            id="imageCaption"
+            class="form-control"
+            placeholder="Enter Image Caption"
+            formControlName="imageCaption"
+            name="imageCaption"
+            type="input"
+          />
+        </div>
+        <label for="imageUrl">Image URL</label>
+        <div class="input-group">
+          <input
+            id="imageUrl"
+            class="form-control"
+            placeholder="Enter Image Url"
+            formControlName="imageUrl"
+            name="imageUrl"
+            type="input"
+          />
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark">Upload</button>
+    </div>
+  </form>
+</ng-template>
