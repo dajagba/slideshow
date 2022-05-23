@@ -54,9 +54,9 @@ export class SlideShowEffects {
       let selectedImage = info[1];
       let slideshowPictures = info[2];
       if (new Set(imagesToDelete).has(selectedImage)) {
-        let next = selectedImage.index + 1;
+        let next = selectedImage?.index + 1;
         let target;
-        if (next >= slideshowPictures.length) {
+        if (next >= slideshowPictures?.length) {
           target = slideshowPictures[1];
         } else {
           target = slideshowPictures.find((val) => val.index == next);

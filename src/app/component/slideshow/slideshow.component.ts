@@ -8,11 +8,15 @@ import { IAppState } from './../../store/state/app.state';
 import { Store, select } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { selectSlideShowPictures } from '../../store/selectors/slideshow.selectors';
-import { NgbCarousel, NgbModal, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbCarousel,
+  NgbModal,
+  NgbSlideEvent,
+} from '@ng-bootstrap/ng-bootstrap';
 import { map, take, withLatestFrom } from 'rxjs/operators';
 import { combineLatest, pipe, Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IPicture } from 'src/app/model/model';
+import { IPicture } from '../../model/model';
 
 @Component({
   selector: 'app-slideshow',
@@ -29,11 +33,11 @@ export class SlideshowComponent implements OnInit {
     imageTitle: new FormControl('', Validators.required),
     imageCaption: new FormControl(''),
     imageUrl: new FormControl('https://i.imgur.com/oyTPssF.jpeg'),
-    imageFile: new FormControl(File)
+    imageFile: new FormControl(File),
   });
   @ViewChild('myCarousel', { static: true }) ngCarousel!: NgbCarousel;
 
-  constructor(public store: Store<IAppState>,private modalService: NgbModal) {}
+  constructor(public store: Store<IAppState>, private modalService: NgbModal) {}
   ngOnInit(): void {}
 
   slideChange(ngbSlideEvent: NgbSlideEvent) {
@@ -46,33 +50,38 @@ export class SlideshowComponent implements OnInit {
   }
 
   deleteSlideShowImage() {
-      this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
+    this.currentSelectedPicuture$.pipe(take(1)).subscribe((data) => {
       this.store.dispatch(DeleteSlideShowImage({ payload: [data] }));
       this.ngCarousel.next();
     });
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log(`Closed with: ${result}`);
-    }, (reason) => {
-    console.log(`Dismissed `+(reason));
-    });
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          console.log(`Closed with: ${result}`);
+        },
+        (reason) => {
+          console.log(`Dismissed ` + reason);
+        }
+      );
   }
-  onUpload(){
+  onUpload() {
     this.modalService.dismissAll('Form Uploaded');
     let image: IPicture = {
       title: this.imageUploadForm.get('imageTitle').value,
       caption: this.imageUploadForm.get('imageCaption').value,
-      url: this.imageUploadForm.get('imageUrl').value
-    }
-    this.store.dispatch(AddSlideShowImage({payload: image}));
+      url: this.imageUploadForm.get('imageUrl').value,
+    };
+    this.store.dispatch(AddSlideShowImage({ payload: image }));
   }
-  uploadViaFiileUpload(){
-    alert("Sorry this feature is still under development!! ");
+  uploadViaFiileUpload() {
+    alert('Sorry this feature is still under development!! ');
   }
 
-  openAdminConfig(){
-    alert("Sorry this feature is still under development!! ");
+  openAdminConfig() {
+    alert('Sorry this feature is still under development!! ');
   }
 }

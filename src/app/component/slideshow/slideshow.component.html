@@ -1,4 +1,4 @@
-<ngb-carousel #myCarousel interval="false" (slide)="slideChange($event)">
+<ngb-carousel #myCarousel (slide)="slideChange($event)">
   <ng-template
     ngbSlide
     *ngFor="let image of slideShowPictures$ | async; let i = index"
@@ -10,21 +10,29 @@
     />
     <div class="carousel-caption">
       <h3>{{ image.title }}</h3>
-      <p>{{image.caption ? image.caption : "Nulla vitae elit libero, a pharetra augue mollis interdum."}}</p>
+      <p>
+        {{
+          image.caption
+            ? image.caption
+            : 'Nulla vitae elit libero, a pharetra augue mollis interdum.'
+        }}
+      </p>
     </div>
   </ng-template>
 </ngb-carousel>
-<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-5 ">
+<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-5">
   <button class="btn btn-danger" (click)="deleteSlideShowImage()">
     Delete Image
   </button>
-  <button  (click)="open(content)"
-  id="btnGroupDrop1"  type="button"
-  class="btn btn-success"
->
-  Add a new Image
-</button>
-  <!-- <div class="btn-group" role="group">
+  <button
+    (click)="open(content)"
+    id="btnGroupDrop1"
+    type="button"
+    class="btn btn-success"
+  >
+    Add a new Image
+  </button>
+  <div class="btn-group" role="group">
     <button
       id="btnGroupDrop1"
       type="button"
@@ -45,8 +53,10 @@
       </li>
       <li><a class="dropdown-item" href="javascript:void(0);" (click)="uploadViaFiileUpload()">via File Upload</a></li>
     </ul>
-  </div> -->
-  <button class="btn btn-primary" (click)="openAdminConfig()">Open Admin Panel</button>
+  </div>
+  <button class="btn btn-primary" (click)="openAdminConfig()">
+    Open Admin Panel
+  </button>
 </div>
 
 <ng-template #content let-modal>
@@ -73,7 +83,6 @@
             formControlName="imageTitle"
             type="input"
           />
-
         </div>
         <label for="imageCaption">Image Caption</label>
         <div class="input-group">
@@ -98,7 +107,6 @@
           />
         </div>
       </div>
-
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-outline-dark">Upload</button>
