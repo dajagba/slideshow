@@ -18,7 +18,13 @@
   <button class="btn btn-danger" (click)="deleteSlideShowImage()">
     Delete Image
   </button>
-  <div class="btn-group" role="group">
+  <button  (click)="open(content)"
+  id="btnGroupDrop1"  type="button"
+  class="btn btn-success"
+>
+  Add a new Image
+</button>
+  <!-- <div class="btn-group" role="group">
     <button
       id="btnGroupDrop1"
       type="button"
@@ -39,7 +45,7 @@
       </li>
       <li><a class="dropdown-item" href="javascript:void(0);" (click)="uploadViaFiileUpload()">via File Upload</a></li>
     </ul>
-  </div>
+  </div> -->
   <button class="btn btn-primary" (click)="openAdminConfig()">Open Admin Panel</button>
 </div>
 
